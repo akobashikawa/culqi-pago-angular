@@ -1,6 +1,6 @@
-# Culqi Pago
+# Culqi Pago Angular
 
-Simple formulario para llamar al formulario de pago de culqi con el monto indicado.
+Simple formulario para llamar al formulario de pago de culqi con el monto indicado, usando Angular.
 
 ## Explicación
 
