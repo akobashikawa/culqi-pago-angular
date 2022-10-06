@@ -1,27 +1,36 @@
-# CulqiPagoAngular
+# Culqi Pago
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.1.
+Simple formulario para llamar al formulario de pago de culqi con el monto indicado.
 
-## Development server
+## Explicación
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- El **formulario de pago de culqi** permite usar un medio de pago, como una tarjeta de crédito, para hacer el pago de un monto especificado.
+- `Culqi` es un _objeto global_ que se importa de https://checkout.culqi.com/js/v4
+    - Debe ser seteado previamente 
+        - `Culqi.publicKey`: llave pública creada en el dashboard de culqi
+        - `Culqi.settings(json)` permite indicar
+            - `title`: título del formulario
+            - `currency`: moneda a usar
+            - `amount`: monto a cobrar
+        - `Culqi.options(json)` permite indicar
+            - `paymentMethods`
+            - `style`
+                - `logo`: url hacia una imagen, que se mostrará en la cabecera del formulario
+- `window.culqi()` debe ser seteado previamente
+    - Será ejecutada al presionar el botón de pagar del formulario de pago de culqi
+    - Debe preparar un *objeto* `data`, que contiene
+        - `amount`
+        - `currency_code`
+        - `email`
+        - `source_id`
+        - `metadata`
+            - el objeto `metadata` es para agregar datos arbitrarios definidos por el usuario
+    - Debe enviar `data` vía POST al *endpoint de charge* que se haya definido en el backend
+- `Culqi.open()` abre el formulario de pago
+    - Cuando se presione el *botón de pagar*, ejecutará la función `window.culqi()` que se haya definido previamente
+        - Si todo va bien, el *objeto* `Culqi.token` es el token que será seteado por Culqi
+        - Se envía la data al *endpoint de charge*
 
-## Code scaffolding
+## Uso
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- `npm run start`
