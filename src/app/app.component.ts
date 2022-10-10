@@ -2,7 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 declare global {
-  interface Window { culqi: any; }
+  interface Window {
+    culqi: any;
+    fireComponentFunction: any;
+  }
 }
 
 declare var Culqi: any;
@@ -25,11 +28,13 @@ const CULQI_MYCHARGE_AUTHORIZATION = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzd
 export class AppComponent implements OnInit {
   Culqi: any;
   culqi: any;
+  fireComponentFunction: any;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.Culqi = Culqi;
+    window.fireComponentFunction = this.componentFunction;
     console.log('Culqi', Culqi);
   }
 
@@ -70,6 +75,9 @@ export class AppComponent implements OnInit {
 
         this.http.post<any>(CULQI_MYCHARGE_URL, data).subscribe(result => {
               console.log(result);
+              this.componentFunction('componentFunction');
+              window.fireComponentFunction('fireComponentFunction');
+              Culqi.close();
           })
 
         // axios.post(CULQI_MYCHARGE_URL, data, { headers })
@@ -141,5 +149,9 @@ export class AppComponent implements OnInit {
 
     // abrir el formulario de pago
     this.Culqi.open();
+  }
+
+  public componentFunction(source: string) {
+    console.log(`Ejecutada desde: ${source}`);
   }
 }
